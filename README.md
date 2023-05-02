@@ -211,3 +211,89 @@ paid with paypal: 400
 ![strategy](https://user-images.githubusercontent.com/80326351/234932662-73861195-a97a-4e41-b621-4e4bf8b5a22f.png)
 
 </details>
+
+<details>
+<summary>Homework2</summary>
+
+# Book Management System
+This is a simple Book Management System which allows to manage books and authors information. The system uses a RESTful API to communicate between the server and the client. The server side of this system is built with Spring Boot and MongoDB.
+
+**Technologies**
+- Java 11
+- Spring Boot
+- Spring Data MongoDB
+- MapStruct
+- Lombok
+- Docker
+
+### API Endpoints
+#### Authors
+* **Get all authors**
+
+```bash
+GET /authors
+```
+Returns a list of all authors.
+
+* **Create an author**
+```bash
+POST /authors
+```
+Creates a new author with the given name.
+
+* **Get a single author**
+```bash
+GET /authors/{id}
+```
+Returns the author with the given ID.
+
+* **Update an author**
+```bash
+PUT /authors/{id}
+```
+Updates the name of the author with the given ID.
+
+* **Delete an author**
+```bash
+DELETE /authors/{id}
+```
+Deletes the author with the given ID and all of their associated books.
+
+#### Books
+* **Get all books**
+```bash
+GET /books
+```
+Returns a list of all books.
+
+* **Create a book**
+```bash
+POST /books
+```
+Creates a new book with the given name, release year, and author ID.
+
+* **Get books by author**
+```bash
+GET /books?authorId={authorId}
+```
+Returns a list of all books written by the author with the given ID.
+
+* **Get a single book**
+```bash
+GET /books/{id}
+```
+Returns the book with the given ID.
+
+* **Update a book's name and release year**
+```bash
+PUT /books/{id}
+```
+Updates the name and release year of the book with the given ID.
+
+* **Delete a book**
+```bash
+DELETE /books/{id}
+```
+Deletes the book with the given ID.
+
+</details>
