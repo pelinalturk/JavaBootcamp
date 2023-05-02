@@ -5,6 +5,8 @@ import com.springboot.model.dto.BookDto;
 import static com.springboot.model.mapper.BookMapper.BOOK_MAPPER;
 import com.springboot.model.request.CreateBookRequest;
 import com.springboot.model.request.UpdateBookRequest;
+import com.springboot.service.AuthorEntityService;
+import com.springboot.service.AuthorService;
 import com.springboot.service.BookEntityService;
 import com.springboot.service.BookService;
 import org.springframework.stereotype.Service;
@@ -16,9 +18,11 @@ import java.util.stream.Collectors;
 @Service
 public class BookServiceImpl implements BookService {
     private final BookEntityService bookEntityService;
+    private final AuthorService authorService;
 
-    public BookServiceImpl(BookEntityService bookEntityService) {
+    public BookServiceImpl(BookEntityService bookEntityService, AuthorService authorService) {
         this.bookEntityService = bookEntityService;
+        this.authorService = authorService;
     }
 
     @Override
@@ -43,12 +47,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBook(String id) {
         Optional<Book> book = bookEntityService.getBookById(id);
+        String authorId = book.get().getAuthorID();
         if(book.isPresent()){
-            Optional<List<Book>>getBooksByAuthorID = bookEntityService.getBooksByAuthorId(book.get().getAuthorID());
-            if(!getBooksByAuthorID.isPresent()){}
-                //soft delete will be applied
-        }
             bookEntityService.deleteBook(id);
+            List<Book> getBooksByAuthorID = bookEntityService.getBooksByAuthorId(authorId).get();
+            if(getBooksByAuthorID.size() == 0){
+                authorService.deleteAuthor(authorId);
+            }
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.springboot.service.AuthorService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,8 +22,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<AuthorDto> getAllAuthors() {
-        List<Author> getAllAuthors = authorEntityService.getAllAuthors();
+    public List<AuthorDto> getAllActiveAuthors() {
+        List<Author> getAllAuthors = authorEntityService.getAllActiveAuthors();
         return getAllAuthors.stream().map(AUTHOR_MAPPER::convertToAuthorDto).collect(Collectors.toList());
     }
 
@@ -31,5 +32,14 @@ public class AuthorServiceImpl implements AuthorService {
         Author author = AUTHOR_MAPPER.createAuthor(createAuthorRequest);
         author = authorEntityService.save(author);
         return AUTHOR_MAPPER.convertToAuthorDto(author);
+    }
+
+    @Override
+    public void deleteAuthor(String authorId) {
+        Optional<Author> author = authorEntityService.getAuthorById(authorId);
+        if(author.isPresent())
+        {
+            authorEntityService.deleteAuthor(authorId);
+        }
     }
 }

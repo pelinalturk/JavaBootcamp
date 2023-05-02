@@ -7,6 +7,7 @@ import com.springboot.model.request.CreateAuthorRequest;
 import java.util.List;
 
 public interface AuthorService {
-    List<AuthorDto>getAllAuthors();
+    List<AuthorDto>getAllActiveAuthors();
     AuthorDto createAuthor(CreateAuthorRequest createAuthorRequest);
+    void deleteAuthor(String authorId);
 }
