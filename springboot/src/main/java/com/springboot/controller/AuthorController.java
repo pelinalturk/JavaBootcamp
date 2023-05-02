@@ -18,7 +18,7 @@ public class AuthorController {
 
     @GetMapping()
     public ResponseEntity<Response<?>> getAllAuthors(){
-        return ResponseEntity.ok(Response.builder().isSuccess(true).response(authorService.getAllAuthors()).build());
+        return ResponseEntity.ok(Response.builder().isSuccess(true).response(authorService.getAllActiveAuthors()).build());
     }
 
     @PostMapping("")
