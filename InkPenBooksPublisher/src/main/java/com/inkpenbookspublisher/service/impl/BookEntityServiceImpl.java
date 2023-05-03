@@ -7,6 +7,7 @@ import com.inkpenbookspublisher.service.BookEntityService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookEntityServiceImpl implements BookEntityService {
@@ -25,5 +26,25 @@ public class BookEntityServiceImpl implements BookEntityService {
     @Override
     public List<Book> findAll() {
         return bookRepository.findAll();
+    }
+
+    @Override
+    public void delete(String id) {
+        bookRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Book> getById(String id) {
+        return bookRepository.findById(id);
+    }
+
+    @Override
+    public boolean existsById(String id) {
+        return bookRepository.existsById(id);
+    }
+
+    @Override
+    public Optional<List<Book>> getBookByAuthorId(String id) {
+        return bookRepository.findByAuthorId(id);
     }
 }
