@@ -3,11 +3,15 @@ package com.inkpenbookspublisher.service.impl;
 import com.inkpenbookspublisher.model.Author;
 import com.inkpenbookspublisher.model.dto.AuthorDto;
 import static com.inkpenbookspublisher.model.mapper.AuthorMapper.AUTHOR_MAPPER;
+
+import com.inkpenbookspublisher.model.dto.AuthorWithBookDto;
 import com.inkpenbookspublisher.model.request.CreateAuthorRequest;
 import com.inkpenbookspublisher.service.AuthorEntityService;
 import com.inkpenbookspublisher.service.AuthorService;
+import com.inkpenbookspublisher.service.BookEntityService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,9 +20,11 @@ import java.util.stream.Collectors;
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorEntityService authorEntityService;
+    private final BookEntityService bookEntityService;
 
-    public AuthorServiceImpl(AuthorEntityService authorEntityService) {
+    public AuthorServiceImpl(AuthorEntityService authorEntityService, BookEntityService bookEntityService) {
         this.authorEntityService = authorEntityService;
+        this.bookEntityService = bookEntityService;
     }
 
     @Override
@@ -55,5 +61,19 @@ public class AuthorServiceImpl implements AuthorService {
             authorEntityService.deleteById(id);
         }
         // exception
+    }
+
+    @Override
+    public List<AuthorWithBookDto> getAllBooksWithAuthor(String authorId) {
+        List<Author> authors = authorEntityService.getAll();
+        List<AuthorWithBookDto> authorWithBookDtos = new ArrayList<>();
+
+        for (Author getAuthor : authors) {
+            AuthorWithBookDto authorWithBookDto = AUTHOR_MAPPER.convertToAuthorWithBookDto(getAuthor);
+            authorWithBookDto.setBooks(bookEntityService.getBookByAuthorId(getAuthor.getId()).get());
+            authorWithBookDtos.add(authorWithBookDto);
+        }
+
+        return authorWithBookDtos;
     }
 }

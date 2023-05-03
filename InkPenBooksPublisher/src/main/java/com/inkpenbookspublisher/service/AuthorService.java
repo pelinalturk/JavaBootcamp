@@ -1,6 +1,8 @@
 package com.inkpenbookspublisher.service;
 
+import com.inkpenbookspublisher.model.Author;
 import com.inkpenbookspublisher.model.dto.AuthorDto;
+import com.inkpenbookspublisher.model.dto.AuthorWithBookDto;
 import com.inkpenbookspublisher.model.request.CreateAuthorRequest;
 
 import java.util.List;
@@ -13,4 +15,7 @@ public interface AuthorService {
     boolean existsByAuthorId(String id);
 
     void deleteAuthorById(String id);
+
+    List<AuthorWithBookDto> getAllBooksWithAuthor(String authorId);
+
 }
