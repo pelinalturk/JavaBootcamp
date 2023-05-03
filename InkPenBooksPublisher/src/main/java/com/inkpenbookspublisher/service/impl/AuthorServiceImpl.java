@@ -9,6 +9,7 @@ import com.inkpenbookspublisher.service.AuthorService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,5 +32,28 @@ public class AuthorServiceImpl implements AuthorService {
     public List<AuthorDto> getAllAuthors() {
         return authorEntityService.getAll().stream()
                 .map(AUTHOR_MAPPER::convertToAuthorDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<AuthorDto> getAuthorById(String id) {
+        Optional<Author> author = authorEntityService.getById(id);
+        if (author.isPresent()) {
+            return Optional.ofNullable(AUTHOR_MAPPER.convertToAuthorDto(author.get()));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean existsByAuthorId(String id) {
+        return authorEntityService.existsById(id);
+    }
+
+    @Override
+    public void deleteAuthorById(String id) {
+        Optional<Author> author = authorEntityService.getById(id);
+        if (author.isPresent()) {
+            authorEntityService.deleteById(id);
+        }
+        // exception
     }
 }

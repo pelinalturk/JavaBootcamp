@@ -6,6 +6,7 @@ import com.inkpenbookspublisher.service.AuthorEntityService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthorEntityServiceImpl implements AuthorEntityService {
@@ -23,6 +24,23 @@ public class AuthorEntityServiceImpl implements AuthorEntityService {
 
     @Override
     public List<Author> getAll() {
-        return authorRepository.findAll();
+        return authorRepository.findAllByIsDeletedFalse();
+    }
+
+    @Override
+    public Optional getById(String id) {
+        return authorRepository.findById(id);
+    }
+
+    @Override
+    public boolean existsById(String id) {
+        return authorRepository.existsById(id);
+    }
+
+    @Override
+    public void deleteById(String id) {
+        Author author = authorRepository.findById(id).get();
+        author.setIsDeleted(true);
+        authorRepository.save(author);
     }
 }
