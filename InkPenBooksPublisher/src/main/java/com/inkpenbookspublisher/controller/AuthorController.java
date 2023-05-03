@@ -21,6 +21,10 @@ public class AuthorController {
         return ResponseEntity.ok(InkPenBooksResponse.builder().isSuccess(true).response(authorService.getAllAuthors()).build());
     }
 
+    @GetMapping("books/{authorId}")
+    public ResponseEntity<InkPenBooksResponse<?>>getAllBooksWithAuthor(@PathVariable String authorId){
+        return ResponseEntity.ok(InkPenBooksResponse.builder().isSuccess(true).response(authorService.getAllBooksWithAuthor(authorId)).build());
+    }
     @PostMapping("")
     ResponseEntity<InkPenBooksResponse<?>>saveAuthor(@RequestBody CreateAuthorRequest createAuthorRequest){
         return ResponseEntity.ok(InkPenBooksResponse.builder().isSuccess(true).response(authorService.saveAuthor(createAuthorRequest)).build());
