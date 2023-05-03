@@ -6,6 +6,7 @@ import com.springboot.service.AuthorEntityService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthorEntityServiceImpl implements AuthorEntityService {
@@ -22,7 +23,19 @@ public class AuthorEntityServiceImpl implements AuthorEntityService {
     }
 
     @Override
-    public List<Author> getAllAuthors() {
-        return authorRepository.findAll();
+    public List<Author> getAllActiveAuthors() {
+        return authorRepository.findAllByIsDeletedFalse().get();
+    }
+
+    @Override
+    public void deleteAuthor(String authorID) {
+        Author author = authorRepository.findById(authorID).get();
+        author.setIsDeleted(true);
+        authorRepository.save(author);
+    }
+
+    @Override
+    public Optional getAuthorById(String authorId) {
+        return authorRepository.findById(authorId);
     }
 }
