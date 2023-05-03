@@ -213,22 +213,6 @@ paid with paypal: 400
 </details>
 
 <details>
-<summary>Homework3</summary>
-
-Imagine that you are a software developer working for a publishing house called "Ink Pen Books". One day, the company receives a manuscript from a new writer, the talented young writer Alice. The manuscript is a novel called "Hidden Garden" and tells of a young girl learning the power of nature and friendship as she discovers a secret garden in her new home.
-Your task, as Software Developer, is to create a Spring Boot application that will help "Ink Pen Books" publish Alice's novel. Specifically, you need to create a backend API that allows the company to store information about books, authors, and sales.
-The API has these requirements:
-- API should allow the company to create a new book record in the database and this record should include the book's title, description, publication date and author information (name, email and bio).
-- API should allow "Ink Pen Books" to retrieve a book record by its ID and get a list of all the books in the database.
-- API should allow "Ink Pen Books" to update the information of a book record including the author's information.
-- API should allow "Ink Pen Books" to delete a book record from database.
-- API should properly handle all request errors and provide informative error messages to the client.
-
-- To implement these requirements you will need to use MongoDB as the database and implement common error handling methods for all points. You should also include appropriate tests to verify that the API is working as expected.
-As a bonus, you can add additional features like tracking book sales, generating reports or user authentication.
-</details>
-
-<details>
 <summary>Homework2</summary>
 
 # Book Management System
@@ -312,4 +296,20 @@ DELETE /books/{id}
 ```
 Deletes the book with the given ID.
 
+</details>
+
+<details>
+<summary>Homework3</summary>
+
+Imagine that you are a software developer working for a publishing house called "Ink Pen Books". One day, the company receives a manuscript from a new writer, the talented young writer Alice. The manuscript is a novel called "Hidden Garden" and tells of a young girl learning the power of nature and friendship as she discovers a secret garden in her new home.
+Your task, as Software Developer, is to create a Spring Boot application that will help "Ink Pen Books" publish Alice's novel. Specifically, you need to create a backend API that allows the company to store information about books, authors, and sales.
+The API has these requirements:
+- API should allow the company to create a new book record in the database and this record should include the book's title, description, publication date and author information (name, email and bio).
+- API should allow "Ink Pen Books" to retrieve a book record by its ID and get a list of all the books in the database.
+- API should allow "Ink Pen Books" to update the information of a book record including the author's information.
+- API should allow "Ink Pen Books" to delete a book record from database.
+- API should properly handle all request errors and provide informative error messages to the client.
+
+- To implement these requirements you will need to use MongoDB as the database and implement common error handling methods for all points. You should also include appropriate tests to verify that the API is working as expected.
+  As a bonus, you can add additional features like tracking book sales, generating reports or user authentication.
 </details>
