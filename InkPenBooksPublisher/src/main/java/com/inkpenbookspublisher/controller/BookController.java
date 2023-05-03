@@ -25,4 +25,20 @@ public class BookController {
     public ResponseEntity<InkPenBooksResponse<?>>saveBook(@RequestBody CreateBookRequest createBookRequest){
         return ResponseEntity.ok(InkPenBooksResponse.builder().isSuccess(true).response(bookService.saveBook(createBookRequest)).build());
     }
+
+    @GetMapping("{bookId}")
+    public ResponseEntity<InkPenBooksResponse<?>>getBookById(@PathVariable String bookId){
+        return ResponseEntity.ok(InkPenBooksResponse.builder().isSuccess(true).response(bookService.getBookById(bookId)).build());
+    }
+
+    @GetMapping("/author/{authorId}")
+    public ResponseEntity<InkPenBooksResponse<?>>getBooksByAuthorId(@PathVariable String authorId){
+        return ResponseEntity.ok(InkPenBooksResponse.builder().isSuccess(true).response(bookService.getBooksByAuthorId(authorId)).build());
+    }
+
+    @DeleteMapping("{bookId}")
+    public ResponseEntity<InkPenBooksResponse<?>>deleteBookById(@PathVariable String bookId){
+        bookService.deleteBookById(bookId);
+        return ResponseEntity.ok(InkPenBooksResponse.builder().isSuccess(true).build());
+    }
 }
