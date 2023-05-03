@@ -3,6 +3,7 @@ package com.inkpenbookspublisher.service.impl;
 import com.inkpenbookspublisher.model.Author;
 import com.inkpenbookspublisher.model.dto.AuthorDto;
 import static com.inkpenbookspublisher.model.mapper.AuthorMapper.AUTHOR_MAPPER;
+import static com.inkpenbookspublisher.model.mapper.BookMapper.BOOK_MAPPER;
 
 import com.inkpenbookspublisher.model.dto.AuthorWithBookDto;
 import com.inkpenbookspublisher.model.request.CreateAuthorRequest;
@@ -70,8 +71,10 @@ public class AuthorServiceImpl implements AuthorService {
 
         for (Author getAuthor : authors) {
             AuthorWithBookDto authorWithBookDto = AUTHOR_MAPPER.convertToAuthorWithBookDto(getAuthor);
-            authorWithBookDto.setBooks(bookEntityService.getBookByAuthorId(getAuthor.getId()).get());
+            authorWithBookDto.setBooks(bookEntityService.getBookByAuthorId
+                    (getAuthor.getId()).get().stream().map(BOOK_MAPPER::convertToBookDto).collect(Collectors.toList()));
             authorWithBookDtos.add(authorWithBookDto);
+
         }
 
         return authorWithBookDtos;

@@ -16,5 +16,5 @@ import java.util.List;
 public class AuthorWithBookDto {
     private String id;
     private String name;
-    private List<Book>books = new ArrayList<>();
+    private List<BookDto>books = new ArrayList<>();
 }
