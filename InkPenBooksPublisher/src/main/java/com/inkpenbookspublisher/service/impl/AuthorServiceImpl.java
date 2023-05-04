@@ -1,11 +1,13 @@
 package com.inkpenbookspublisher.service.impl;
 
+import com.inkpenbookspublisher.exception.AuthorNotFoundException;
 import com.inkpenbookspublisher.model.Author;
 import com.inkpenbookspublisher.model.dto.AuthorDto;
 import static com.inkpenbookspublisher.model.mapper.AuthorMapper.AUTHOR_MAPPER;
 import static com.inkpenbookspublisher.model.mapper.BookMapper.BOOK_MAPPER;
 
 import com.inkpenbookspublisher.model.dto.AuthorWithBookDto;
+import com.inkpenbookspublisher.model.dto.BookDto;
 import com.inkpenbookspublisher.model.request.CreateAuthorRequest;
 import com.inkpenbookspublisher.service.AuthorEntityService;
 import com.inkpenbookspublisher.service.AuthorService;
@@ -36,9 +38,9 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<AuthorDto> getAllAuthors() {
-        return authorEntityService.getAll().stream()
-                .map(AUTHOR_MAPPER::convertToAuthorDto).collect(Collectors.toList());
+    public Optional<List<AuthorDto>> getAllAuthors() {
+        return Optional.ofNullable(authorEntityService.getAll().get().stream()
+                .map(AUTHOR_MAPPER::convertToAuthorDto).collect(Collectors.toList()));
     }
 
     @Override
@@ -47,7 +49,7 @@ public class AuthorServiceImpl implements AuthorService {
         if (author.isPresent()) {
             return Optional.ofNullable(AUTHOR_MAPPER.convertToAuthorDto(author.get()));
         }
-        return Optional.empty();
+        return Optional.ofNullable(AUTHOR_MAPPER.convertToAuthorDto(author.orElseThrow(() -> new AuthorNotFoundException("Author not found by id: " + id))));
     }
 
     @Override
@@ -56,27 +58,39 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void deleteAuthorById(String id) {
+    public Optional deleteAuthorById(String id) {
         Optional<Author> author = authorEntityService.getById(id);
-        if (author.isPresent()) {
-            authorEntityService.deleteById(id);
-        }
-        // exception
+        return author.isPresent() ? authorEntityService.deleteById(id) : Optional.ofNullable(author.orElseThrow(() -> new AuthorNotFoundException("Author not found by id: " + id)));
     }
 
     @Override
-    public List<AuthorWithBookDto> getAllBooksWithAuthor(String authorId) {
-        List<Author> authors = authorEntityService.getAll();
+    public List<AuthorWithBookDto> getAllBooksWithAuthor() {
+        Optional<List<Author>> authors = authorEntityService.getAll();
         List<AuthorWithBookDto> authorWithBookDtos = new ArrayList<>();
 
-        for (Author getAuthor : authors) {
+        for (Author getAuthor : authors.get()) {
             AuthorWithBookDto authorWithBookDto = AUTHOR_MAPPER.convertToAuthorWithBookDto(getAuthor);
             authorWithBookDto.setBooks(bookEntityService.getBookByAuthorId
                     (getAuthor.getId()).get().stream().map(BOOK_MAPPER::convertToBookDto).collect(Collectors.toList()));
             authorWithBookDtos.add(authorWithBookDto);
 
         }
-
         return authorWithBookDtos;
+    }
+
+    @Override
+    public Optional<AuthorWithBookDto> getBooksWithAuthor(String authorId) {
+            Optional<Author> author = authorEntityService.getById(authorId);
+            if (author.isPresent()) {
+                List<BookDto> books = bookEntityService.getBookByAuthorId(authorId).get()
+                        .stream()
+                        .map(book -> BOOK_MAPPER.convertToBookDto(book))
+                        .collect(Collectors.toList());
+
+                AuthorWithBookDto authorWithBookDto = AUTHOR_MAPPER.convertToAuthorWithBookDto(author.get());
+                authorWithBookDto.setBooks(books);
+                return Optional.of(authorWithBookDto);
+            }
+            throw new AuthorNotFoundException("Author not found by id: " + authorId);
     }
 }

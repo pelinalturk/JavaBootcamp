@@ -21,9 +21,23 @@ public class AuthorController {
         return ResponseEntity.ok(InkPenBooksResponse.builder().isSuccess(true).response(authorService.getAllAuthors()).build());
     }
 
-    @GetMapping("books/{authorId}")
-    public ResponseEntity<InkPenBooksResponse<?>>getAllBooksWithAuthor(@PathVariable String authorId){
-        return ResponseEntity.ok(InkPenBooksResponse.builder().isSuccess(true).response(authorService.getAllBooksWithAuthor(authorId)).build());
+    @GetMapping("{authorId}")
+    public ResponseEntity<InkPenBooksResponse<?>>getAuthorById(@PathVariable String authorId){
+        return ResponseEntity.ok(InkPenBooksResponse.builder().isSuccess(true).response(authorService.getAuthorById(authorId)).build());
+    }
+
+    @DeleteMapping("{authorId}")
+    public ResponseEntity<InkPenBooksResponse<?>>deleteAuthorById(@PathVariable String authorId){
+        return ResponseEntity.ok(InkPenBooksResponse.builder().isSuccess(true).response(authorService.deleteAuthorById(authorId)).build());
+    }
+    @GetMapping("books/getAllBooksWithAuthors")
+    public ResponseEntity<InkPenBooksResponse<?>>getAllBooksWithAuthor(){
+        return ResponseEntity.ok(InkPenBooksResponse.builder().isSuccess(true).response(authorService.getAllBooksWithAuthor()).build());
+    }
+
+    @GetMapping("books/getBooksWithAuthor/{authorId}")
+    public ResponseEntity<InkPenBooksResponse<?>>getBooksWithAuthor(@PathVariable String authorId){
+        return ResponseEntity.ok(InkPenBooksResponse.builder().isSuccess(true).response(authorService.getBooksWithAuthor(authorId)).build());
     }
     @PostMapping("")
     ResponseEntity<InkPenBooksResponse<?>>saveAuthor(@RequestBody CreateAuthorRequest createAuthorRequest){
