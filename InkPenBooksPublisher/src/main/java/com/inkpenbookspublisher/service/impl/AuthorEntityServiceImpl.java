@@ -23,7 +23,7 @@ public class AuthorEntityServiceImpl implements AuthorEntityService {
     }
 
     @Override
-    public List<Author> getAll() {
+    public Optional<List<Author>> getAll() {
         return authorRepository.findAllByIsDeletedFalse();
     }
 
@@ -38,9 +38,9 @@ public class AuthorEntityServiceImpl implements AuthorEntityService {
     }
 
     @Override
-    public void deleteById(String id) {
+    public Optional deleteById(String id) {
         Author author = authorRepository.findById(id).get();
         author.setIsDeleted(true);
-        authorRepository.save(author);
+        return Optional.ofNullable(authorRepository.save(author));
     }
 }

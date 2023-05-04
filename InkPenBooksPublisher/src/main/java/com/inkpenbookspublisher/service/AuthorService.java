@@ -10,12 +10,13 @@ import java.util.Optional;
 
 public interface AuthorService {
     AuthorDto saveAuthor(CreateAuthorRequest createAuthorRequest);
-    List<AuthorDto>getAllAuthors();
+    Optional<List<AuthorDto>>getAllAuthors();
     Optional<AuthorDto> getAuthorById(String id);
     boolean existsByAuthorId(String id);
 
-    void deleteAuthorById(String id);
+    Optional deleteAuthorById(String id);
 
-    List<AuthorWithBookDto> getAllBooksWithAuthor(String authorId);
+    List<AuthorWithBookDto> getAllBooksWithAuthor();
 
+    Optional<AuthorWithBookDto> getBooksWithAuthor(String authorId);
 }
