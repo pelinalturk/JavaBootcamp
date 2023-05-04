@@ -1,5 +1,7 @@
 package com.inkpenbookspublisher.service.impl;
 
+import com.inkpenbookspublisher.exception.AuthorNotFoundException;
+import com.inkpenbookspublisher.exception.BookNotFoundException;
 import com.inkpenbookspublisher.model.Book;
 import com.inkpenbookspublisher.model.dto.BookDto;
 import com.inkpenbookspublisher.model.request.CreateBookRequest;
@@ -31,8 +33,7 @@ public class BookServiceImpl implements BookService {
             bookEntityService.save(book);
             return BOOK_MAPPER.convertToBookDto(book);
         }
-        //exception
-        return null;
+        throw new AuthorNotFoundException("Author not found by id: " + createBookRequest.getAuthorId());
     }
 
     @Override
@@ -46,8 +47,8 @@ public class BookServiceImpl implements BookService {
         if (book.isPresent()) {
             return Optional.ofNullable(BOOK_MAPPER.convertToBookDto(book.get()));
         }
-        //exception
-        return Optional.empty();
+        return Optional.ofNullable(BOOK_MAPPER.convertToBookDto(book.orElseThrow(
+                () -> new BookNotFoundException("Book not found by id: " + id))));
     }
 
     @Override
@@ -60,6 +61,9 @@ public class BookServiceImpl implements BookService {
             if(getBookByAuthorId.get().size()==0){
                 authorService.deleteAuthorById(authorId);
             }
+        }
+        else {
+            throw new BookNotFoundException("Book not found by id: " + authorId);
         }
     }
 
@@ -76,7 +80,6 @@ public class BookServiceImpl implements BookService {
                 return Optional.ofNullable(bookList.get().stream().map(BOOK_MAPPER::convertToBookDto).collect(Collectors.toList()));
             }
         }
-        //author id not exists exception
-        return null;
+        throw new AuthorNotFoundException("Author not found by id: " + authorId);
     }
 }

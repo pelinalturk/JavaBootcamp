@@ -13,4 +13,10 @@ public class CustomExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(false, "Author Not Found", exception.getMessage());
         return new ResponseEntity<>(errorResponse , HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(BookNotFoundException.class)
+    public ResponseEntity<?>bookNotFound(BookNotFoundException exception){
+        ErrorResponse errorResponse = new ErrorResponse(false, "Book Not Found", exception.getMessage());
+        return new ResponseEntity<>(errorResponse , HttpStatus.BAD_REQUEST);
+    }
 }
