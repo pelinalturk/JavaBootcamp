@@ -24,19 +24,33 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public AuthenticationResponse register(RegisterRequest request) {
-        var user = User.builder()
+    private User.UserBuilder register(RegisterRequest request){
+        return User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .roles(Roles.USER)
+                .password(passwordEncoder.encode(request.getPassword()));
+    }
+    public AuthenticationResponse registerAuthor(RegisterRequest request) {
+        var user = register(request)
+                .roles(Roles.AUTHOR)
                 .build();
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
                 return AuthenticationResponse.builder()
                         .token(jwtToken)
                         .build();
+    }
+
+    public AuthenticationResponse registerPublisher(RegisterRequest request) {
+        var user =register(request)
+                .roles(Roles.ADMIN)
+                .build();
+        userRepository.save(user);
+        var jwtToken = jwtService.generateToken(user);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {

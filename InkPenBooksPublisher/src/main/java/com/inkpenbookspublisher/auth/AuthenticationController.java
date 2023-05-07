@@ -16,11 +16,18 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping("register")
-    public ResponseEntity<AuthenticationResponse> register(
+    @PostMapping("register/author")
+    public ResponseEntity<AuthenticationResponse> registerAuthor(
             @RequestBody RegisterRequest request
     ){
-        return ResponseEntity.ok(authenticationService.register(request));
+        return ResponseEntity.ok(authenticationService.registerAuthor(request));
+    }
+
+    @PostMapping("register/publisher")
+    public ResponseEntity<AuthenticationResponse> registerPublisher(
+            @RequestBody RegisterRequest request
+    ){
+        return ResponseEntity.ok(authenticationService.registerPublisher(request));
     }
 
     @PostMapping("authenticate")
