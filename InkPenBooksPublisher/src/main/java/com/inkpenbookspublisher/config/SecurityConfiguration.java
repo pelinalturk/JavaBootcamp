@@ -1,5 +1,6 @@
 package com.inkpenbookspublisher.config;
 
+import com.inkpenbookspublisher.model.Roles;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -11,7 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration {
+public class SecurityConfiguration{
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
@@ -27,8 +28,14 @@ public class SecurityConfiguration {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .requestMatchers("auth/**")
-                .permitAll()
+                .requestMatchers("/auth/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/v3/api-docs/**"
+                ).permitAll()
+                .requestMatchers("/book").permitAll()
+                .requestMatchers("/book/**").hasAnyRole(Roles.ADMIN.name())
+                .requestMatchers("/author/**").hasAnyRole(Roles.ADMIN.name())
                 .anyRequest()
                 .authenticated()
                 .and()

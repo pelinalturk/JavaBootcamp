@@ -4,10 +4,12 @@ import com.inkpenbookspublisher.model.request.CreateBookRequest;
 import com.inkpenbookspublisher.model.response.InkPenBooksResponse;
 import com.inkpenbookspublisher.service.BookService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("book")
+@PreAuthorize("hasRole('AUTHOR')")
 public class BookController {
 
     private final BookService bookService;
@@ -17,6 +19,7 @@ public class BookController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('author:read')")
     public ResponseEntity<InkPenBooksResponse<?>>getAllBooks(){
         return ResponseEntity.ok(InkPenBooksResponse.builder().isSuccess(true).response(bookService.getAllBooks()).build());
     }
